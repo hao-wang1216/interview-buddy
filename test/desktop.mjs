@@ -11,7 +11,8 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 const output = join(root, '.test-output');
 await mkdir(output, { recursive: true });
 const profile = await mkdtemp(join(output, 'desktop-'));
-const executable = join(root, 'node_modules', 'electron', 'dist', 'electron.exe');
+const installedExecutable = process.env.BUDDY_TEST_EXECUTABLE;
+const executable = installedExecutable || join(root, 'node_modules', 'electron', 'dist', 'electron.exe');
 const store = new Store(join(profile, 'interview-buddy.sqlite'));
 const sample = '我负责用 SAM2 实现水下目标分割，并对比不同模型的推理耗时。';
 store.importDocument('验收简历.md', 'resume', Buffer.from(sample), [{ page: 2, text: sample }]);
@@ -50,7 +51,8 @@ async function until(predicate, label, timeout = 18000) {
 async function open() {
   launchError = undefined;
   stderr = '';
-  app = spawn(executable, [root, '--remote-debugging-port=0', '--user-data-dir=' + profile], {
+  const args = installedExecutable ? [] : [root];
+  app = spawn(executable, [...args, '--remote-debugging-port=0', '--user-data-dir=' + profile], {
     cwd: root, windowsHide: true, stdio: ['ignore', 'ignore', 'pipe'],
   });
   exited = new Promise(done => app.once('exit', done));

@@ -1,8 +1,18 @@
+<p align="center"><img src="docs/assets/interview-buddy-logo.png" width="128" alt="面试搭子图标，蓝色对话气泡与声波"></p>
+
 # 面试搭子 · Interview Buddy
 
-面试搭子是一款 Windows 桌面应用，帮助求职者准备面试、整理个人资料、记录求职进度，并在实时面试中转写系统声音和麦克风。咨询与参考回答接入 DeepSeek，语音转写由本机的 Whisper Small 完成。
+面试搭子是一款 Windows 面试智能体，支持 DeepSeek 咨询、个人知识库、求职进度，以及可在屏幕共享中隐藏的面试悬浮窗。
 
-[快速启动](#快速启动) · [功能与截图](#功能与截图) · [数据与隐私](#数据与隐私) · [开发与测试](#开发与测试)
+[下载安装](#下载安装) · [功能与截图](#功能与截图) · [快速启动](#快速启动) · [开发与测试](#开发与测试)
+
+## 下载安装
+
+1. 下载 [Windows x64 安装包](https://github.com/hao-wang1216/interview-buddy/releases/latest)，在发布页的 **Assets** 里选择 `InterviewBuddy-*-Windows-x64-Setup.exe`。
+2. 双击安装，从开始菜单打开「面试搭子」。安装包已包含语音转写环境和模型，可以直接使用本地转写。
+3. 需要咨询、参考回答或联网搜索时，在软件左下角设置里保存自己的 DeepSeek API Key。
+
+安装包适用于 Windows 10 2004 及更新版本的 64 位系统。当前安装包未进行代码签名，可以用发布页附带的 SHA-256 文件核对。
 
 ## 功能与截图
 
@@ -128,6 +138,9 @@ python .\tools\provision-speech.py
 - `npm test` 编译源码并验证本地存储、PDF 提取、引用和模拟 DeepSeek 工具调用。
 - `npm run test:desktop` 使用临时数据目录自动操作 Windows 界面。
 - 若要同时检查系统声音、实时转写和捕获保护，将 `BUDDY_TEST_WAV` 设为本机中文 WAV 文件的路径，并将 `BUDDY_TEST_EXPECTED` 设为录音中便于识别的词，例如“大模型”。然后运行桌面测试。
+- 要测试已安装的版本，可将 `BUDDY_TEST_EXECUTABLE` 指向安装目录中的 `InterviewBuddy.exe`，再运行桌面测试。测试使用独立的临时数据目录。
+
+发布用安装包由 `tools/build-windows-installer.ps1` 构建，需要 Inno Setup 6、与依赖锁定版本匹配的 Electron Windows x64 分发目录，以及带依赖和 Whisper Small 的 Windows x64 嵌入式 Python 3.12 运行时。脚本的 `-SpeechRuntime` 接受包含 `python` 和 `whisper-small` 的独立目录。
 
 源码依赖 [Electron](https://github.com/electron/electron)、[PDF.js](https://github.com/mozilla/pdf.js)、[faster-whisper](https://github.com/SYSTRAN/faster-whisper) 和 [Whisper Small 的 CTranslate2 权重](https://huggingface.co/Systran/faster-whisper-small)。面试工具参考了 [interview-skill](https://github.com/shengxuan-create/interview-skill)、[interview-my-project](https://github.com/WarlCang/interview-my-project) 和 [Tech Interview Handbook](https://github.com/yangshun/tech-interview-handbook) 的公开方法。
 
