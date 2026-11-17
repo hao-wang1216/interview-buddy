@@ -58,6 +58,7 @@ $application = (New-Item -ItemType Directory -Path (Join-Path $resources 'app'))
 foreach ($entry in @('package.json', 'LICENSE', 'dist', 'ui', 'workers')) {
     Copy-Item -LiteralPath (Join-Path $project $entry) -Destination $application -Recurse
 }
+Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'third-party') -Destination $application -Recurse
 $modules = (New-Item -ItemType Directory -Path (Join-Path $application 'node_modules')).FullName
 $canvas = (New-Item -ItemType Directory -Path (Join-Path $modules '@napi-rs')).FullName
 Copy-Item -LiteralPath (Join-Path $project 'node_modules\pdfjs-dist') -Destination $modules -Recurse
