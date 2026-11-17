@@ -46,3 +46,7 @@ Documents, confirmed facts, transcripts, tool summaries, and the application tra
 Runtime dependencies include [Electron](https://github.com/electron/electron), [PDF.js](https://github.com/mozilla/pdf.js), [faster-whisper](https://github.com/SYSTRAN/faster-whisper), and [Whisper Small for CTranslate2](https://huggingface.co/Systran/faster-whisper-small). Their releases retain their upstream licenses. Model weights and third-party binaries are fetched separately.
 
 The interview tools draw on the preparation approaches described by [interview-skill](https://github.com/shengxuan-create/interview-skill), [interview-my-project](https://github.com/WarlCang/interview-my-project), and [Tech Interview Handbook](https://github.com/yangshun/tech-interview-handbook).
+
+## License
+
+Interview Buddy source code is released under the [MIT License](LICENSE).
