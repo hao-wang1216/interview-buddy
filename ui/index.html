@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>面试搭子 · 独立版</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><div class="wave mini" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><strong>面试搭子</strong></div>
+    <nav aria-label="主要功能">
+      <button id="new-session" type="button" class="new-chat"><span aria-hidden="true">＋</span> 新对话</button>
+      <button data-page="practice" aria-current="page">面试咨询</button>
+      <button data-page="library">个人知识库</button>
+      <button data-page="history">面试记录</button>
+      <button data-page="applications">求职进度</button>
+    </nav>
+    <div class="recent" id="recent" hidden>
+      <h2>最近对话</h2>
+      <div id="recent-list"></div>
+    </div>
+    <button id="settings-open" type="button" class="setup"><span class="dot"></span><span id="model-status">DeepSeek 设置</span></button>
+  </aside>
+  <main>
+    <header class="page-head">
+      <div class="page-label"><h1 id="page-title">面试咨询</h1><p id="page-description">咨询面试准备、简历和项目经历。</p></div>
+      <div class="row">
+        <button id="cancel" type="button" class="quiet" hidden>取消当前生成</button>
+        <button id="open-live" type="button" class="primary">开始实时面试</button>
+      </div>
+    </header>
+    <p class="global-status" id="notice" role="status" hidden></p>
+
+    <section id="practice" aria-labelledby="page-title">
+      <div class="chat-scroll" id="chat-scroll">
+        <div class="chat-column">
+        <article class="welcome" id="welcome">
+          <h2>想准备哪场面试？</h2>
+          <p>可以聊岗位要求、润色简历，或一起梳理项目怎么讲。</p>
+        </article>
+        <div id="practice-transcript" class="transcript" hidden></div>
+        <article id="pending-turn" class="turn" hidden>
+          <p id="pending-question" class="turn-question" aria-label="你"></p>
+          <div id="pending-tools" hidden></div>
+          <div id="practice-result" class="reply" role="status"></div>
+        </article>
+        </div>
+      </div>
+      <div class="chat-column chat-footer">
+        <form id="consult-form" class="composer">
+          <div class="composer-tools row">
+            <button id="composer-model" type="button" class="quiet"></button>
+            <button type="button" data-jump="library" class="quiet">个人知识库</button>
+            <details id="consult-tools" class="consult-tools">
+              <summary id="consult-tool-label">面试工具</summary>
+              <div id="consult-tool-options" class="consult-tool-options" aria-label="面试工具"></div>
+            </details>
+          </div>
+          <textarea id="reference-question" aria-label="咨询问题" rows="2" maxlength="4000" placeholder="问问面试搭子…" required></textarea>
+          <div class="composer-actions row"><button type="button" data-jump="library" class="quiet">＋ 添加资料</button><button id="generate-answer" type="submit" class="primary send-button" aria-label="发送" title="发送">↑</button></div>
+        </form>
+        <details id="practice-notes" class="practice-notes">
+          <summary>准备与复盘</summary>
+          <div class="practice-meta">
+            <span><strong id="doc-count">0</strong> 份资料 · <strong id="fact-count">0</strong> 条确认事实</span>
+            <button id="prepare-plan" type="button" class="quiet">整理面试档案</button>
+            <button id="generate-review" type="button" class="quiet" disabled>生成本场复盘</button>
+          </div>
+          <section id="plan-content" class="note" hidden><h3>准备计划</h3><p></p></section>
+          <section id="review-content" class="note" hidden><h3>本场复盘</h3><p></p></section>
+        </details>
+      </div>
+    </section>
+
+    <section id="library" aria-labelledby="page-title" hidden>
+      <div class="columns library-grid">
+        <article class="card">
+          <h2>资料文件</h2>
+          <div class="row gap-top">
+            <select id="document-kind" aria-label="资料类型"><option value="resume">简历</option><option value="job">岗位描述</option><option value="project">项目资料</option></select>
+            <button id="import" type="button" class="primary">导入文件</button>
+          </div>
+          <p class="muted extra-gap">支持 TXT、Markdown 和可选中文字的 PDF。</p>
+          <form id="search-form" class="row gap-top">
+            <input id="search" aria-label="搜索个人资料" type="search" maxlength="400" placeholder="关键词，例如 SAM2" required>
+            <button class="quiet" type="submit">搜索</button>
+          </form>
+          <div id="document-list" class="stack gap-top"></div>
+          <div id="passage-view" class="stack gap-top" hidden></div>
+        </article>
+        <article class="card">
+          <h2>档案事实</h2>
+          <p class="muted extra-gap">确认后才会作为你的个人经历用于回答。每条事实都可以回看原文。</p>
+          <div id="fact-list" class="stack gap-top"></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="history" aria-labelledby="page-title" hidden>
+      <div class="columns history-grid">
+        <article class="card"><h2>练习列表</h2><div id="history-list" class="stack gap-top"></div></article>
+        <article class="card">
+          <div class="card-top"><h2 id="history-title">记录详情</h2><button type="button" class="quiet" id="continue" hidden>继续练习</button></div>
+          <div id="history-detail" class="stack gap-top"></div>
+        </article>
+      </div>
+    </section>
+    <section id="applications" aria-labelledby="page-title" hidden>
+      <div class="card">
+        <div class="card-top">
+          <label class="row">状态 <select id="application-filter"><option value="">全部</option></select></label>
+          <button type="button" id="application-add" class="primary">＋ 添加记录</button>
+        </div>
+        <div class="applications-table">
+          <table aria-label="求职进度">
+            <thead><tr><th scope="col">公司</th><th scope="col">岗位</th><th scope="col">面试日期</th><th scope="col">轮次</th><th scope="col">状态</th><th scope="col">记录</th><th scope="col">操作</th></tr></thead>
+            <tbody id="application-list"></tbody>
+          </table>
+        </div>
+        <p id="applications-empty" class="muted gap-top" hidden></p>
+      </div>
+    </section>
+  </main>
+  <dialog id="application-editor" aria-labelledby="application-title">
+    <form id="application-form" class="flow">
+      <div class="card-top"><h2 id="application-title">添加面试记录</h2><button id="application-close" type="button" class="quiet">取消</button></div>
+      <div class="application-fields">
+        <label class="field">公司<input id="application-company" maxlength="100" required></label>
+        <label class="field">岗位<input id="application-position" maxlength="120" required></label>
+        <label class="field">面试日期<input id="application-date" type="date" required></label>
+        <label class="field">轮次<input id="application-round" maxlength="60" placeholder="例如 技术一面" required></label>
+        <label class="field">状态<select id="application-status" required></select></label>
+      </div>
+      <label class="field">备注<textarea id="application-notes" rows="3" maxlength="2000" placeholder="记录面试题、反馈或后续安排"></textarea></label>
+      <p id="application-error" class="notice" role="status" hidden></p>
+      <div class="row"><button type="submit" class="primary">保存记录</button></div>
+    </form>
+  </dialog>
+  <dialog id="settings">
+    <form id="settings-form" class="flow">
+      <div class="card-top"><h2>DeepSeek 设置</h2><button type="button" id="settings-close" class="quiet">关闭</button></div>
+      <label class="field">API Key<input type="password" id="key" autocomplete="off" spellcheck="false" maxlength="512"></label>
+      <label class="field">模型<input id="model" list="model-list" required maxlength="80"><datalist id="model-list"><option value="deepseek-flash"></option><option value="deepseek-v4-pro"></option></datalist></label>
+      <label class="field">面试语言<select id="language"><option value="zh-CN">简体中文</option><option value="en-US">英语</option><option value="follow-question">跟随提问</option></select></label>
+      <label class="field">回答偏好<textarea id="answer-style" rows="2" maxlength="300" placeholder="例如：用 STAR 结构，口述控制在 1 分钟内。"></textarea></label>
+      <p class="muted">生成时，所需的资料片段和问题会发送到 DeepSeek。资料与面试记录保存在本机。</p>
+      <p class="muted path" id="data-path"></p>
+      <p class="notice" id="settings-result" role="status" hidden></p>
+      <div class="row wrap">
+        <button class="primary" type="submit">保存设置</button>
+        <button class="quiet" id="test-api" type="button">测试连接</button>
+        <button class="quiet danger" id="clear-key" type="button" hidden>移除已保存的 Key</button>
+      </div>
+    </form>
+  </dialog>
+</body>
+</html>

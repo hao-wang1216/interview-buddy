@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>面试搭子 · 实时面试</title>
+  <link rel="stylesheet" href="live.css">
+  <script type="module" src="live.js"></script>
+</head>
+<body>
+  <header class="live-bar">
+    <h1>面试搭子</h1>
+    <span id="capture-status">待开始</span>
+    <button id="share-visibility" class="quiet" type="button" aria-label="共享时隐藏悬浮窗" aria-pressed="true" title="切换悬浮窗在共享画面中的可见性">共享时隐藏</button>
+    <button id="pin" class="quiet" aria-pressed="true" type="button">已置顶</button>
+    <button id="capture" type="button">开始监听</button>
+    <button id="close-window" class="quiet close-button" type="button" aria-label="关闭悬浮窗" title="关闭悬浮窗">×</button>
+  </header>
+  <div class="live-panels">
+    <section class="live-panel" aria-labelledby="transcript-title">
+      <div class="row panel-head">
+        <h2 id="transcript-title">实时转写</h2>
+        <div class="sources">
+          <label><input id="system" type="checkbox" checked>系统声音</label>
+          <label><input id="microphone" type="checkbox" checked>麦克风</label>
+        </div>
+      </div>
+      <p id="notice" role="status">语音在本机转写。</p>
+      <div id="transcript" role="log" aria-label="实时转写" tabindex="0">
+        <p id="empty" class="muted">开始监听后，识别到的话会出现在这里。</p>
+      </div>
+    </section>
+    <section class="live-panel" aria-labelledby="answer-title">
+      <div class="row panel-head"><h2 id="answer-title">参考回答</h2></div>
+      <div class="answer-body">
+        <p id="answer-empty" class="muted">点击转写引用问题，或直接输入。</p>
+        <p id="result" aria-live="polite" tabindex="0" hidden></p>
+      </div>
+      <form id="question-form">
+        <textarea id="question" aria-label="实时面试问题" rows="2" maxlength="1200" placeholder="输入或修改问题…" required></textarea>
+        <div class="row actions">
+          <button id="latest" class="quiet" type="button" disabled>引用最新转写</button>
+          <div class="row">
+            <button id="cancel" class="quiet" type="button" hidden>取消</button>
+            <button id="generate" type="submit" class="send" aria-label="生成回答" title="生成回答">↑</button>
+          </div>
+        </div>
+      </form>
+    </section>
+  </div>
+  <button id="resize-grip" type="button" aria-label="调整悬浮窗大小，拖动或使用方向键" title="拖动调整悬浮窗大小"></button>
+</body>
+</html>

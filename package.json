@@ -1,0 +1,20 @@
+{
+  "name": "interview-buddy-independent",
+  "productName": "面试搭子 独立版",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/main.mjs",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "npm run build && electron .",
+    "test": "npm run build && node --test test/*.test.mjs",
+    "test:desktop": "npm run build && node test/desktop.mjs"
+  },
+  "dependencies": {
+    "@types/node": "24.19.2",
+    "electron": "45.3.3",
+    "pdfjs-dist": "6.5.438",
+    "typescript": "7.0.2"
+  }
+}

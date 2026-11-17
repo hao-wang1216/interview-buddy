@@ -1,0 +1,76 @@
+:root {
+  color-scheme: light;
+  font: 14px/1.6 "Segoe UI", "Microsoft YaHei UI", sans-serif;
+  color: #202537;
+  --blue: #234ce0;
+  --glass: rgba(245, 247, 254, .88);
+  --line: rgba(63, 80, 125, .18);
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { height: 100vh; padding: 8px 8px 15px; margin: 0; display: flex; flex-direction: column; align-items: center; gap: 13px; overflow: hidden; }
+h1, h2, p { margin: 0; }
+h1 { font-size: 15px; font-weight: 650; }
+h2 { font-size: 15px; }
+.live-bar {
+  display: flex; align-items: center; gap: 10px; padding: 7px 8px 7px 16px;
+  border: 1px solid #fff9; border-radius: 40px; background: var(--glass);
+  box-shadow: 0 4px 13px #15244629; flex: 0 0 auto;
+  -webkit-app-region: drag;
+}
+.live-bar button { -webkit-app-region: no-drag; }
+#share-visibility[aria-pressed=false] { background: #fff0d6; color: #70440f; }
+.row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.sources { display: flex; gap: 5px; }
+.sources label { display: flex; align-items: center; gap: 4px; background: #e1e9ff; padding: 3px 8px; border-radius: 20px; font-size: 12px; white-space: nowrap; }
+.sources input { margin: 0; accent-color: var(--blue); }
+button, textarea { font: inherit; }
+button { border: 0; border-radius: 22px; padding: 6px 12px; background: var(--blue); color: white; cursor: pointer; white-space: nowrap; }
+button.quiet { background: #e3e9f7; color: #30406a; }
+button.close-button { padding: 0; width: 30px; height: 30px; font-size: 18px; line-height: 1; }
+button:hover:not(:disabled) { filter: brightness(.94); }
+button:disabled { opacity: .47; cursor: default; }
+:focus-visible { outline: 2px solid #536ae0; outline-offset: 2px; }
+#notice, .muted, #capture-status { color: #555f73; font-size: 12px; }
+#notice.error { color: #a22626; }
+.live-panels { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; width: 100%; min-height: 0; flex: 1 1 auto; }
+.live-panel {
+  display: flex; flex-direction: column; gap: 8px; min-height: 0; min-width: 0; padding: 12px;
+  background: var(--glass); border: 1px solid #fff9; border-radius: 24px; box-shadow: 0 4px 13px #15244629;
+}
+.panel-head { min-height: 28px; }
+#transcript { overflow: auto; scrollbar-width: thin; flex: 1 1 auto; border-top: 1px solid var(--line); }
+#empty { padding: 9px 0; }
+.transcript-line { display: block; width: 100%; text-align: left; padding: 9px 3px; border-bottom: 1px solid var(--line); border-radius: 0; color: inherit; background: none; white-space: pre-wrap; overflow-wrap: anywhere; }
+.transcript-line:hover { background: #e8edfa; }
+.transcript-line span { display: block; color: #555f73; font-size: 11px; }
+.answer-body { min-height: 0; flex: 1 1 auto; overflow: auto; scrollbar-width: thin; }
+#answer-empty { margin-top: 8px; }
+form { background: #ffffffa6; border: 1px solid var(--line); border-radius: 17px; padding: 8px; display: grid; gap: 7px; }
+textarea { display: block; color: inherit; background: none; border: 0; border-radius: 7px; width: 100%; padding: 4px 6px; resize: none; }
+.send { padding: 0; width: 33px; height: 33px; font-size: 18px; }
+#result { font-size: 14px; padding: 4px 2px; white-space: pre-wrap; overflow-wrap: anywhere; }
+#resize-grip {
+  position: absolute; right: 2px; bottom: 2px; width: 24px; height: 24px;
+  border: 1px solid #fff; border-radius: 8px; padding: 0; background: #e3e9f7;
+  color: #30406a; cursor: nwse-resize; touch-action: none;
+}
+#resize-grip::after {
+  content: ''; position: absolute; right: 5px; bottom: 5px; width: 10px; height: 10px;
+  border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+}
+@media (max-width: 610px) {
+  body { gap: 7px; }
+  .live-bar { gap: 5px; max-width: 100%; padding: 4px 6px; }
+  .live-bar button { font-size: 12px; padding: 4px 7px; }
+  .live-bar h1 { font-size: 13px; }
+  .live-bar .close-button { width: 24px; height: 24px; font-size: 16px; padding: 0; }
+  .live-panels { grid-template-columns: minmax(0,1fr); grid-template-rows: minmax(0,2fr) minmax(0,3fr); gap: 7px; }
+  .live-panel { gap: 4px; padding: 7px 9px; border-radius: 15px; }
+  form { padding: 5px; gap: 3px; }
+  textarea { font-size: 12px; }
+}
+@media (max-width: 390px) {
+  .live-bar { align-self: stretch; justify-content: space-between; }
+  .live-bar h1 { display: none; }
+}
