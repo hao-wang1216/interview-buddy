@@ -104,7 +104,9 @@ async function evaluate(expression) {
 }
 const click = selector => evaluate('document.querySelector(' + JSON.stringify(selector) + ').click()');
 const waitText = value => until(() => evaluate('document.body?.innerText.includes(' + JSON.stringify(value) + ')'), value);
-const waitSpeech = () => until(() => evaluate('/水下目[标標]/.test(document.body.innerText)'), 'Mandarin sample');
+const expectedSpeech = process.env.BUDDY_TEST_EXPECTED?.trim();
+const speechPattern = expectedSpeech ? new RegExp(RegExp.escape(expectedSpeech)) : /水下目[标標]/;
+const waitSpeech = () => until(() => evaluate(speechPattern + '.test(document.body.innerText)'), 'Mandarin sample');
 const input = (selector, text) => evaluate('document.querySelector(' + JSON.stringify(selector) + ').value=' + JSON.stringify(text));
 const submit = selector => evaluate('document.querySelector(' + JSON.stringify(selector) + ').requestSubmit()');
 
@@ -279,7 +281,7 @@ try {
     await click('#capture');
     await until(() => evaluate("document.querySelector('#capture-status').textContent === '待开始'"), 'finish');
     await click('#latest');
-    assert.match(await evaluate("document.querySelector('#question').value"), /水下目[标標]/);
+    assert.match(await evaluate("document.querySelector('#question').value"), speechPattern);
     const live = await call('Page.captureScreenshot', { format: 'png' });
     await writeFile(join(output, 'desktop-live.png'), Buffer.from(live.data, 'base64'));
     await click('#system');

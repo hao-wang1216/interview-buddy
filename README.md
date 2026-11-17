@@ -6,11 +6,11 @@
 
 ## 功能与截图
 
-以下截图均来自实际运行的面试搭子。公司、简历、网页和模型回复使用演示数据，实时转写来自合成语音。设置截图省略了本机数据目录。
+以下截图均来自实际运行的面试搭子，统一使用「企业知识库大模型问答（RAG）」作为案例。公司、简历、网页和模型回复使用演示数据，实时转写来自合成语音。设置截图省略了本机数据目录。
 
 ### 1. 面试咨询
 
-点击「新对话」直接提问，例如“我准备面试视觉算法岗，怎么介绍我的水下分割项目？”回复以流式方式显示。你可以在同一个对话里追问，也可以从侧边栏打开之前的对话。结合个人资料回答时，可以展开「资料出处」回看引用的经历。
+点击「新对话」直接提问，例如“我准备面试大模型应用岗，怎么介绍我做的企业知识库问答项目？”回复以流式方式显示。你可以在同一个对话里追问，也可以从侧边栏打开之前的对话。结合个人资料回答时，可以展开「资料出处」回看引用的经历。
 
 ![面试咨询界面，右侧显示提问，左侧显示分点回答和资料出处](docs/assets/01-consultation.png)
 
@@ -35,9 +35,9 @@
 <details>
 <summary>查看岗位匹配、STAR 故事和回答点评的实际界面</summary>
 
-**岗位匹配**会分列已有证据和待补信息。示例中，图像分割和实验评估已有素材，部署环境和延迟预算还需要补充。
+**岗位匹配**会分列已有证据和待补信息。示例中，RAG 检索和离线评估已有素材，上线并发、延迟预算和监控方式还需要补充。
 
-![岗位匹配示例，列出已匹配的分割经验和待补充的部署信息](docs/assets/11-job-fit.png)
+![岗位匹配示例，列出已匹配的 RAG 检索经验和待补充的上线信息](docs/assets/11-job-fit.png)
 
 **STAR 故事**会把经历整理为情境、任务、行动和结果，方便直接练习口述。
 
@@ -80,7 +80,7 @@
 
 点击「开始实时面试」，勾选「系统声音」「麦克风」或两者，再点「开始监听」。左侧区分声源显示转写，右侧接收参考回答。点击一条转写即可把它填进输入框；可以先修正错字，再提交给 DeepSeek。
 
-![实时面试悬浮窗，左侧是实际转写的合成问句，右侧是演示参考回答](docs/assets/08-live-overlay.png)
+![实时面试悬浮窗，左侧实际转写大模型项目问句，右侧展示检索评估的参考回答](docs/assets/08-live-overlay.png)
 
 ### 8. 悬浮窗缩放、置顶与共享可见性
 
@@ -127,7 +127,7 @@ python .\tools\provision-speech.py
 
 - `npm test` 编译源码并验证本地存储、PDF 提取、引用和模拟 DeepSeek 工具调用。
 - `npm run test:desktop` 使用临时数据目录自动操作 Windows 界面。
-- 若要同时检查系统声音、实时转写和捕获保护，可以将 `BUDDY_TEST_WAV` 设为本机一段包含“水下目标”的中文 WAV 文件，再运行桌面测试。
+- 若要同时检查系统声音、实时转写和捕获保护，将 `BUDDY_TEST_WAV` 设为本机中文 WAV 文件的路径，并将 `BUDDY_TEST_EXPECTED` 设为录音中便于识别的词，例如“大模型”。然后运行桌面测试。
 
 源码依赖 [Electron](https://github.com/electron/electron)、[PDF.js](https://github.com/mozilla/pdf.js)、[faster-whisper](https://github.com/SYSTRAN/faster-whisper) 和 [Whisper Small 的 CTranslate2 权重](https://huggingface.co/Systran/faster-whisper-small)。面试工具参考了 [interview-skill](https://github.com/shengxuan-create/interview-skill)、[interview-my-project](https://github.com/WarlCang/interview-my-project) 和 [Tech Interview Handbook](https://github.com/yangshun/tech-interview-handbook) 的公开方法。
 
